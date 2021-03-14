@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define dtype  long long
+#define endl "\n"
+#define mod 1000000007
+vector<dtype> fact, invfact;
+
+dtype bigmod(dtype n, dtype p, dtype m) {
+    if (p == 0)
+        return 1;
+    dtype x = bigmod(n, p >> 1, m);
+    x = (x * x) % m;
+    if (p & 1)
+        x = (x * n) % m;
+    return x;
+
+}
+
+dtype repncr(dtype n, dtype r) {
+    if (n == 0)
+        return 1;
+    return (((fact[n + r - 1] * invfact[n - 1]) % mod) * invfact[r]) % mod;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false), cin.tie(nullptr);
+    fact.emplace_back(1);
+    invfact.emplace_back(1); 
+    fact.emplace_back(1);
+    invfact.emplace_back(1);
+    for (dtype i = 2; i <= 200007; ++i) {
+        fact.emplace_back(((fact.back() % mod) * i) % mod);
+        invfact.emplace_back(((invfact.back() % mod) * (bigmod(i, mod - 2, mod)) % mod) % mod);
+    }
+    dtype t,te=0;
+    cin >> t;
+    while (t--) {
+        dtype ans = 1;
+        dtype n, p, pre = -1, pred = 1, a, b;
+        cin >> n >> p;
+        while (p--) {
+            cin >> a >> b;
+            ans = (ans * repncr(b - pred + 1, a - pre - 1)) % mod;
+            pre = a;
+            pred = b;
+        }
+        a = n;
+        b = n;
+        ans = (ans * repncr(b - pred + 1, a - pre - 1)) % mod;
+
+        cout <<"Case "<<++te<<": "<< ans << endl;
+
+    }
+    return 0;
+}
