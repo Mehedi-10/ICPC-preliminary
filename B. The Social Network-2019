@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define dtype long long
+#define endl "\n"
+#define case(t, c) cout<<"Case "<<t<<":"<<c
+
+#include<ext/pb_ds/assoc_container.hpp>
+
+using namespace __gnu_pbds;
+typedef tree<dtype, null_type, less_equal<>, rb_tree_tag, tree_order_statistics_node_update> ordeded_set;
+
+class disjointSet {
+public:
+    vector<dtype> parent, size;
+    vector<ordeded_set> pset;
+
+    disjointSet(dtype n) {
+        parent.resize(n), size.resize(n, 1);
+        pset.resize(n);
+        iota(parent.begin(), parent.end(), 0);
+    }
+
+    dtype find_root(dtype i) {
+        while (parent[i] != i) {
+            parent[i] = parent[parent[i]];
+            i = parent[i];
+        }
+        return i;
+    }
+
+    void upload_photo(dtype a, dtype t) {
+        dtype x = find_root(a);
+        pset[x].insert(t);
+    }
+
+    void weighted_union(dtype a, dtype b) {
+        dtype root_a = find_root(a);
+        dtype root_b = find_root(b);
+        if (root_a == root_b)
+            return;
+        if (pset[root_a].size() >= pset[root_b].size())
+            swap(root_a, root_b);
+        parent[root_a] = parent[root_b];
+        size[root_b] += size[root_a];
+        for (auto &i : pset[root_a]) {
+          pset[root_b].insert(i);
+        }
+        pset[root_a].clear();
+
+
+    }
+
+    dtype query(dtype a, dtype l, dtype r) {
+        dtype x = find_root(a);
+        return pset[x].order_of_key(r + 1) - pset[x].order_of_key(l);
+
+    }
+
+    bool is_connected(dtype a, dtype b) {
+        return find_root(a) == find_root(b);
+    }
+};
+
+int main() {
+    dtype t, te = 0;
+    cin >> t;
+    while (t--) {
+        dtype u, v, x, ti, n, q, l, r;
+        cin >> n >> q;
+        disjointSet dsu(n);
+        case(++te, '\n');
+        while (q--) {
+            cin >> x;
+            if (x == 0) {
+                cin >> u >> v;
+                u--, v--;
+                dsu.weighted_union(u, v);
+            } else if (x == 1) {
+                cin >> u >> ti;
+                u--;
+                dsu.upload_photo(u, ti);
+            } else {
+                cin >> u >> l >> r;
+                u--;
+                cout << dsu.query(u, l, r) << endl;
+            }
+        }
+    }
+
+    return 0;
+}
