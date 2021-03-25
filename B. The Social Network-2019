@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-#define dtype long long
+#define dtype int
 #define endl "\n"
 #define case(t, c) cout<<"Case "<<t<<":"<<c
 
@@ -63,6 +63,7 @@ public:
 };
 
 int main() {
+    ios_base::sync_with_stdio(false), cin.tie(nullptr);
     dtype t, te = 0;
     cin >> t;
     while (t--) {
