@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define dtype unsigned long long
+#define endl "\n"
+#define case(t, c) cout<<"Case "<<t<<":"<<c
+dtype ans(dtype n)
+{
+    dtype lo=0,hi=1000000001,mid,x=0;
+    while (lo<=hi)
+    {
+        mid=lo+(hi-lo)/2;
+        if(mid*mid<=n)
+            x=mid,lo=mid+1;
+        else
+            hi=mid-1;
+    }
+    return x;
+
+}
+int main() {
+    ios_base::sync_with_stdio(false), cin.tie(nullptr);
+    int t, te = 0;
+    cin >> t;
+    while (t--) {
+        dtype l, r;
+        cin >> l >> r;
+        l--;
+        case(++te, ' ');
+        cout<<ans(r)+ans(r/2)-ans(l)-ans(l/2)<<endl;
+    }
+    return 0;
+}
