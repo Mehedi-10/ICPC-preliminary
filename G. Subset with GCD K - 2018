@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define dtype int
+#define endl '\n'
+#define case(t, c) cout<<"Case "<<t<<":"<<c
+
+int main() {
+    ios_base::sync_with_stdio(false), cin.tie(nullptr);
+    dtype t, n, m, te = 0;
+    cin >> n;
+    vector<dtype> vc(n);
+    for (auto &i : vc) {
+        cin >> i;
+    }
+    cin >> t;
+    while (t--) {
+        cin >> m;
+        dtype g = 0;
+        for (int i = 0; i < n; ++i) {
+            if (vc[i] % m == 0) {
+                g = gcd(g, vc[i]);
+                if (g == m)
+                    break;
+            }
+        }
+        cout << (g == m ? 'Y' : 'N') << endl;
+
+    }
+
+
+    return 0;
+}
